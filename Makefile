@@ -7,6 +7,6 @@ build clean:
 
 run: build
 	pandoc -t html \
-		-M skip-attrs=class:foo,id:bar \
+		-M remove-attrs=class:foo,id:bar \
 		--filter _build/default/bin/remove_by_attr.exe \
 		test/test.md

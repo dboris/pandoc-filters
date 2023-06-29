@@ -36,9 +36,9 @@ let () =
   let json = Yojson.Basic.from_channel stdin in
   let p = Pandoc.of_json json in
   let attrs =
-    try parse_attrs (Pandoc.meta_string p "skip-attrs")
+    try parse_attrs (Pandoc.meta_string p "remove-attrs")
     with Not_found ->
-      failwith "Usage: pandoc -M skip-attrs=k1:v1,k2:v2,..."
+      failwith "Usage: pandoc -M remove-attrs=k1:v1,k2:v2,..."
   in
   (* let s = Yojson.Basic.pretty_to_string json in
   prerr_endline s; *)
