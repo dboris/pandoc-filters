@@ -1,6 +1,6 @@
 ## Hello {#bar}
 
-This is a test.
+This [*is*]{.foo} a test.
 
 ## Mundo {.foo}
 
