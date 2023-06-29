@@ -1,0 +1,3 @@
+(test
+ (name pandoc_filters)
+ (libraries pandoc yojson))
