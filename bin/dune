@@ -1,4 +1,4 @@
 (executable
- (public_name skip_by_attr)
- (name skip_by_attr)
+ (public_name remove_by_attr)
+ (name remove_by_attr)
  (libraries pandoc_filters pandoc yojson))
