@@ -40,12 +40,15 @@ let () =
     with Not_found ->
       failwith "Usage: pandoc -M remove-attrs=k1:v1,k2:v2,..."
   in
+  let f = contains attrs in
+
   (* let s = Yojson.Basic.pretty_to_string json in
   prerr_endline s; *)
+
   p
   |> Pandoc.map
-      ~block:(block (contains attrs))
-      ~inline:(inline (contains attrs))
+      ~block:(block f)
+      ~inline:(inline f)
   |> Pandoc.to_json
   |> Yojson.Basic.pretty_to_string
   |> print_endline
