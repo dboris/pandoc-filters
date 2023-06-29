@@ -1,6 +1,5 @@
 let block f =
-  let open Pandoc in
-  function
+  let open Pandoc in function
   | BulletList _
   | OrderedList _
   | BlockQuote _
@@ -25,11 +24,11 @@ let contains_assoc xs k v =
   List.mem_assoc k xs && String.equal v (List.assoc k xs)
 
 let contains filter_attrs (id, cls, kvs) =
-  contains_assoc filter_attrs "id" id
-  || List.exists Fun.id (List.map (contains_assoc filter_attrs "class") cls)
-  || kvs
-      |> List.map (fun (k, v) -> contains_assoc filter_attrs k v)
-      |> List.exists Fun.id
+  contains_assoc filter_attrs "id" id ||
+  List.exists Fun.id (List.map (contains_assoc filter_attrs "class") cls) ||
+  kvs
+  |> List.map (fun (k, v) -> contains_assoc filter_attrs k v)
+  |> List.exists Fun.id
 
 let parse_attrs str =
   String.split_on_char ',' str
@@ -45,10 +44,6 @@ let () =
     with Not_found ->
       failwith "Usage: pandoc -M skip-attrs=k1:v1,k2:v2,..."
   in
-  assert (List.length attrs > 0);
-  (* attrs
-  |> List.iter (fun (k, v) -> Printf.eprintf "%s = %s\n" k v);
-  flush stderr; *)
   p
   |> Pandoc.map_blocks (block (contains attrs))
   |> Pandoc.to_json
