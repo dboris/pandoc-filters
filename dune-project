@@ -1,26 +1,17 @@
-(lang dune 3.8)
+(lang dune 3.5)
 
 (name pandoc_filters)
 
 (generate_opam_files true)
 
-(source
- (github username/reponame))
+(source (github dboris/pandoc-filters))
+(authors "Boris D. <borisd@gmx.com>")
+(maintainers "Boris D. <borisd@gmx.com>")
 
-(authors "Author Name")
-
-(maintainers "Maintainer Name")
-
-(license LICENSE)
-
-(documentation https://url/to/documentation)
+(license ISC)
 
 (package
  (name pandoc_filters)
- (synopsis "A short synopsis")
- (description "A longer description")
- (depends ocaml dune)
- (tags
-  (topics "to describe" your project)))
-
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
+ (synopsis "Pandoc filters")
+ (depends ocaml dune pandoc yojson)
+ (tags (pandoc "pandoc filters")))
