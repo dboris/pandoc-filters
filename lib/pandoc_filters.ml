@@ -1,11 +1,11 @@
-let contains_assoc xs k v =
-  List.mem_assoc k xs && String.equal v (List.assoc k xs)
+let kv_mem xs k v =
+  List.exists (fun (k', v') -> String.equal k k' && String.equal v v') xs
 
 let contains filter_attrs (id, cls, kvs) =
-  contains_assoc filter_attrs "id" id ||
-  List.exists Fun.id (List.map (contains_assoc filter_attrs "class") cls) ||
+  kv_mem filter_attrs "id" id ||
+  List.exists Fun.id (List.map (kv_mem filter_attrs "class") cls) ||
   kvs
-  |> List.map (fun (k, v) -> contains_assoc filter_attrs k v)
+  |> List.map (fun (k, v) -> kv_mem filter_attrs k v)
   |> List.exists Fun.id
 
 let parse_param str =

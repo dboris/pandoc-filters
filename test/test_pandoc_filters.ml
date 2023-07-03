@@ -1,20 +1,40 @@
 module F = Pandoc_filters
+module A = Alcotest
 
-let lst = ["k1", "v1"; "k2", "v2"]
+let test_kv_mem () =
+  let lst = ["k1", "v1"; "k2", "v2"] in
 
-let test_contains_assoc () =
-  F.contains_assoc lst "k1" "v1"
-  |> Alcotest.(check bool "contains_assoc first match" true);
-  F.contains_assoc lst "k2" "v2"
-  |> Alcotest.(check bool "contains_assoc last match" true);
-  F.contains_assoc lst "k2" "v"
-  |> Alcotest.(check bool "contains_assoc no value match" false);
-  F.contains_assoc lst "x" "m"
-  |> Alcotest.(check bool "contains_assoc no match" false);
-  F.contains_assoc [] "k2" "v2"
-  |> Alcotest.(check bool "contains_assoc empty list" false)
+  F.kv_mem lst "k1" "v1"
+  |> A.(check bool "kv_mem first match" true);
+
+  F.kv_mem lst "k2" "v2"
+  |> A.(check bool "kv_mem last match" true);
+
+  F.kv_mem lst "k2" "v"
+  |> A.(check bool "kv_mem no value match" false);
+
+  F.kv_mem lst "x" "m"
+  |> A.(check bool "kv_mem no match" false);
+
+  F.kv_mem [] "k2" "v2"
+  |> A.(check bool "kv_mem empty list" false);
+
+  F.kv_mem ["a", "v1"; "a", "v2"] "a" "v2"
+  |> A.(check bool "kv_mem multi key" true)
+
+let test_contains () =
+  F.contains ["class", "foo"] ("myid", ["foo"; "bar"], [])
+  |> A.(check bool "contains class" true);
+
+  F.contains ["class", "x"; "class", "bar"] ("myid", ["foo"; "bar"], [])
+  |> A.(check bool "contains multi class" true);
+
+  F.contains ["class", "x"] ("myid", ["foo"; "bar"], [])
+  |> A.(check bool "contains no match" false)
 
 let suite =
-  [ "contains_assoc", `Quick, test_contains_assoc ]
+  [ "kv_mem", `Quick, test_kv_mem
+  ; "contains", `Quick, test_contains
+  ]
 
-let () = Alcotest.run "test_pandoc_filters" [ "pandoc_filters", suite ]
+let () = A.run "test_pandoc_filters" [ "pandoc_filters", suite ]
