@@ -13,5 +13,10 @@
 (package
  (name pandoc_filters)
  (synopsis "Pandoc filters")
- (depends ocaml dune pandoc yojson)
+ (depends
+  ocaml
+  dune
+  pandoc
+  yojson
+  (alcotest :with-test))
  (tags (pandoc "pandoc filters")))

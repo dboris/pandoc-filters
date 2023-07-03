@@ -12,6 +12,7 @@ depends: [
   "dune" {>= "3.5"}
   "pandoc"
   "yojson"
+  "alcotest" {with-test}
   "odoc" {with-doc}
 ]
 build: [

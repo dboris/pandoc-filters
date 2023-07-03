@@ -1,9 +1,12 @@
-.PHONY: all build clean run
+.PHONY: all build clean test run
 
 all: build
 
 build clean:
 	@dune $@
+
+test:
+	@dune runtest
 
 run: build
 	pandoc -t html \
