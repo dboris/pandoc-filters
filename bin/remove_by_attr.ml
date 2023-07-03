@@ -25,20 +25,29 @@ let contains filter_attrs (id, cls, kvs) =
   |> List.map (fun (k, v) -> contains_assoc filter_attrs k v)
   |> List.exists Fun.id
 
-let parse_attrs str =
-  String.split_on_char ',' str
-  |> List.map @@ fun str ->
-    match String.split_on_char ':' str with
-    | k :: v :: [] -> k, v
-    | _ -> failwith "Attrs should be key-value pairs"
+let parse_param str =
+  match String.split_on_char ':' str with
+  | [k; v] -> k, v
+  | _ -> assert false
+
+let parse_params =
+  let open Pandoc in function
+  | MetaString s -> [parse_param s]
+  | MetaList kvs ->
+    kvs
+    |> List.map begin function
+        | MetaString s -> parse_param s
+        | _ -> assert false
+      end
+  | _ -> assert false
 
 let () =
   let json = Yojson.Basic.from_channel stdin in
   let p = Pandoc.of_json json in
   let attrs =
-    try parse_attrs (Pandoc.meta_string p "remove-attrs")
-    with Not_found ->
-      failwith "Usage: pandoc -M remove-attrs=k1:v1,k2:v2,..."
+    try parse_params (List.assoc "remove-attr" (Pandoc.meta p))
+    with _ ->
+      failwith "Usage: pandoc -M remove-attr=k1:v1 remove-attr=k2:v2 ..."
   in
   let f = contains attrs in
 

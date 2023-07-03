@@ -2,17 +2,17 @@
 
 ### remove_by_attr
 
-This [Pandoc](https://pandoc.org/) [filter](https://pandoc.org/filters.html)
-filters out the elements that match the provided attribute(s). The attrubtes
-are passed in a Pandoc meta parameter `remove-attrs`, eg:
+This [Pandoc filter](https://pandoc.org/filters.html) filters out the elements
+that match the provided attribute(s). The attrubtes are passed in a Pandoc meta
+parameter `remove-attr`:
 
 ```sh
-pandoc -M remove-attrs=class:foo,id:bar --filter remove_by_attr ...
+pandoc -M remove-attr=class:foo --filter remove_by_attr ...
 ```
 
-The attribute name and value are separated by colon, and multiple attribute
-key-value pairs are separated by comma.
+The attribute name and value are separated by a colon. The `remove-attr`
+parameter can be repeated multiple times to supply a list of attributes, eg:
 
-You can specify a "class", "id", or any custom attribute, eg:
-
--M remove-attrs=myattr:someval
+```sh
+pandoc -M remove-attr=class:foo -M remove-attr=id:bar --filter remove_by_attr ...
+```
